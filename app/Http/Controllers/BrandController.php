@@ -17,12 +17,12 @@ class BrandController extends Controller
     {
         $this->middleware('auth');
     }
-    public function AllBrand()
+    public function allBrand()
     {
         $brands = Brand::latest()->paginate(5);
         return view('admin.brand.index', compact('brands'));
     }
-    public function StoreBrand(Request $request)
+    public function storeBrand(Request $request)
     {
         $validatedData = $request->validate(
             [
@@ -53,12 +53,12 @@ class BrandController extends Controller
         );
         return Redirect()->back()->with($notification);
     }
-    public function Edit($id)
+    public function edit($id)
     {
         $brands = Brand::find($id);
         return view('admin.brand.edit', compact('brands'));
     }
-    public function Update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $validatedData = $request->validate(
             [
@@ -102,7 +102,7 @@ class BrandController extends Controller
             return Redirect()->back()->with($notification);
         }
     }
-    public function Delete($id)
+    public function delete($id)
     {
         $image = Brand::find($id);
         $old_image = $image->brand_image;
@@ -111,12 +111,12 @@ class BrandController extends Controller
         return Redirect()->route('all.brand')->with('success', 'Brand Deleted Successfully');
     }
     //This is for Multi Image
-    public function Multipic()
+    public function multipic()
     {
         $images = Multipic::all();
         return view('admin.multipic.index', compact('images'));
     }
-    public function StoreImg(Request $request)
+    public function storeImg(Request $request)
     {
         $image = $request->file('image');
         foreach ($image as $multi_img) {
@@ -131,7 +131,7 @@ class BrandController extends Controller
         }
         return Redirect()->back()->with('success', 'Brand Inserted Successfully');
     }
-    public function Logout()
+    public function logout()
     {
         Auth::logout();
         return Redirect()->route('login')->with('success', 'User Logout');

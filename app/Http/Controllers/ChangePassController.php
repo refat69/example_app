@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Hash;
 
 class ChangePassController extends Controller
 {
-    public function CPassword()
+    public function cPassword()
     {
         return view('admin.body.change_pass');
     }
-    public function UpdatePassword(Request $request)
+    public function updatePassword(Request $request)
     {
         $validateData = $request->validate([
             'oldpassword' => 'required',
@@ -26,9 +26,17 @@ class ChangePassController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
             Auth::logout();
-            return Redirect()->route('login')->with('success', 'Password Update Successfully');
+            $notification = array(
+                'message' => 'Password Change Successfully',
+                'alert-type' => 'success'
+            );
+            return Redirect()->route('login')->with($notification);
         } else {
-            return Redirect()->back()->with('error', 'Password not Update');
+            $notification = array(
+                'message' => 'Password Not Change',
+                'alert-type' => 'error'
+            );
+            return Redirect()->back()->with($notification);
         }
     }
 }

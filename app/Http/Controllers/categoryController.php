@@ -10,20 +10,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
-class categoryController extends Controller
+class CategoryController extends Controller
 {
-    public function AllCat()
+    public function allCat()
     {
         // $categories = DB :: table('categories')
         //             ->join('users','categories.user_id','users.id')
         //             ->select('categories.*','users.name')
         //             ->latest()->paginate(5);
-        $categories = category::latest()->paginate(5);
+        $categories = Category::latest()->paginate(5);
         // $categories = DB::table('categories')->latest()->paginate(5);
 
         return view('admin.category.index', compact('categories'));
     }
-    public function AddCat(Request $request)
+    public function addCat(Request $request)
     {
         $validatedData = $request->validate(
             [
@@ -34,7 +34,7 @@ class categoryController extends Controller
                 'category_name.max' => 'Category Less Than 255Chars',
             ]
         );
-        category::insert([
+        Category::insert([
             'category_name' => $request->category_name,
             'user_id' => Auth()->user()->id,
             'created_at' => Carbon::now()
@@ -49,13 +49,13 @@ class categoryController extends Controller
         // DB::table('categories')->insert($data);
         return Redirect()->back()->with('success', 'Category Inserted Successfully');
     }
-    public function Edit($id)
+    public function edit($id)
     {
         $categories = DB::table('categories')->where('id', $id)->first();
         // $categories = category::find($id);
         return view('admin.category.edit', compact('categories'));
     }
-    public function Update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $update = DB::table('categories')->where('id', $id)->update([
             'category_name' => $request->category_name,
@@ -67,7 +67,7 @@ class categoryController extends Controller
         // ]);
         return Redirect()->route('all.category')->with('success', 'Category Updated Successfully');
     }
-    public function SoftDelete($id)
+    public function softDelete($id)
     {
         $delete = DB::table('categories')->where('id', $id)->delete();
         // $delete = category::find($id)->delete();

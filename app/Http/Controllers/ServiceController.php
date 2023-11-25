@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function HomeService()
+    public function homeService()
     {
         $services = Service::latest()->paginate(5);
         return view('admin.service.index', compact('services'));
     }
-    public function AddService()
+    public function addService()
     {
         return view('admin.service.create');
     }
@@ -32,12 +32,12 @@ class ServiceController extends Controller
         );
         return Redirect()->route('home.service')->with($notification);
     }
-    public function EditService($id)
+    public function editService($id)
     {
         $services = Service::find($id);
         return view('admin.service.edit', compact('services'));
     }
-    public function UpdateService(Request $request, $id)
+    public function updateService(Request $request, $id)
     {
         Service::find($id)->update([
             'title' => $request->title,
@@ -50,7 +50,7 @@ class ServiceController extends Controller
         );
         return Redirect()->route('home.service')->with($notification);
     }
-    public function DeleteService($id)
+    public function deleteService($id)
     {
         Service::find($id)->delete();
         $notification = array(

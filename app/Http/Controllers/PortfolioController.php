@@ -8,7 +8,7 @@ use App\Models\multipic;
 
 class PortfolioController extends Controller
 {
-    public function Portfolio()
+    public function portfolio()
     {
         $images = multipic::all();
         return view('layouts.pages.portfolio', compact('images'));

@@ -9,16 +9,16 @@ use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
 {
-    public function HomeSlider()
+    public function homeSlider()
     {
         $sliders = Slider::latest()->get();
         return view('admin.slider.index', compact('sliders'));
     }
-    public function AddSlider()
+    public function addSlider()
     {
         return view('admin.slider.create');
     }
-    public function StoreSlider(Request $request)
+    public function storeSlider(Request $request)
     {
         $validatedData = $request->validate(
             [
@@ -44,19 +44,27 @@ class HomeController extends Controller
             'description' => $request->description,
             'image' => $last_img,
         ]);
-        return Redirect()->route('home.slider')->with('success', 'Slider Berhasil Ditambahkan');
+        $notification = array(
+            'message' => 'Slider Inserted Successfully',
+            'alert-type' => 'success'
+        );
+        return Redirect()->route('home.slider')->with($notification);
     }
-    public function EditSlider($id)
+    public function editSlider($id)
     {
         $sliders = Slider::find($id);
         return view('admin.slider.edit', compact('sliders'));
     }
-    public function DeleteSlider($id)
+    public function deleteSlider($id)
     {
         $image = Slider::find($id);
         $old_image = $image->image;
         unlink($old_image);
         Slider::find($id)->delete();
-        return Redirect()->route('home.slider')->with('success', 'Slider Berhasil Dihapus');
+        $notification = array(
+            'message' => 'Slider Deleted Successfully',
+            'alert-type' => 'success'
+        );
+        return Redirect()->route('home.slider')->with($notification);
     }
 }

@@ -11,16 +11,16 @@ use Illuminate\Routing\Controller;
 
 class AboutController extends Controller
 {
-    public function HomeAbout()
+    public function homeAbout()
     {
         $homeabout = HomeAbout::latest()->get();
         return view('admin.about.index', compact('homeabout'));
     }
-    public function AddAbout()
+    public function addAbout()
     {
         return view('admin.about.create');
     }
-    public function StoreAbout(Request $request)
+    public function storeAbout(Request $request)
     {
         $validatedData = $request->validate(
             [
@@ -42,12 +42,12 @@ class AboutController extends Controller
         ]);
         return Redirect()->route('home.about')->with('success', 'add about');
     }
-    public function EditAbout($id)
+    public function editAbout($id)
     {
         $homeabout = HomeAbout::find($id);
         return view('admin.about.edit', compact('homeabout'));
     }
-    public function UpdateAbout(Request $request, $id)
+    public function updateAbout(Request $request, $id)
     {
         $validatedData = $request->validate(
             [
@@ -68,7 +68,7 @@ class AboutController extends Controller
         ]);
         return Redirect()->route('home.about')->with('success', 'About Updated');
     }
-    public function DeleteAbout($id)
+    public function deleteAbout($id)
     {
         HomeAbout::find($id)->delete();
         return Redirect()->route('home.about')->with('success', 'About Deleted');

@@ -11,55 +11,67 @@ use Illuminate\Support\Facades\DB;
 class ContactController extends Controller
 {
 
-    public function Contact()
+    public function contact()
     {
         $contacts = Contact::all();
         return view('layouts.pages.contact', compact('contacts'));
     }
-    public function AdminContact()
+    public function adminContact()
     {
         $contacts = Contact::all();
         return view('admin.contact.index', compact('contacts'));
     }
 
-    public function AddContact()
+    public function addContact()
     {
         return view('admin.contact.create');
     }
-    public function StoreContact(Request $request)
+    public function storeContact(Request $request)
     {
         Contact::insert([
             'address' => $request->address,
             'email' => $request->email,
             'phone' => $request->phone,
         ]);
-        return Redirect()->route('admin.contact')->with('success', 'Contact Inserted Successfully');
+        $notification = array(
+            'message' => 'Contact Inserted Successfully',
+            'alert-type' => 'success'
+        );
+        return Redirect()->route('admin.contact')->with($notification);
     }
-    public function EditContact($id)
+    public function editContact($id)
     {
         $contacts = Contact::find($id);
         return view('admin.contact.edit', compact('contacts'));
     }
-    public function UpdateContact(Request $request, $id)
+    public function updateContact(Request $request, $id)
     {
         $update = Contact::find($id)->update([
             'address' => $request->address,
             'email' => $request->email,
             'phone' => $request->phone,
         ]);
-        return Redirect()->route('admin.contact')->with('success', 'Contact Updated Successfully');
+        $notification = array(
+            'message' => 'Contact Updated Successfully',
+            'alert-type' => 'success'
+        );
+        return Redirect()->route('admin.contact')->with($notification);
     }
-    public function DeleteContact($id)
+    public function deleteContact($id)
     {
         $delete = Contact::find($id)->delete();
-        return Redirect()->route('admin.contact')->with('success', 'Contact Deleted Successfully');
+        $notification = array(
+            'message' => 'Contact Deleted Successfully',
+            'alert-type' => 'success'
+        );
+        return Redirect()->route('admin.contact')->with($notification);
     }
-    public function Contacts()
+    public function contacts()
     {
         $contacts = DB::table('contacts')->first();
         return view('admin.contact.index', compact('contacts'));
     }
-    public function ContactForm(Request $request)
+    public function contactForm(Request $request)
     {
         ContactForm::insert([
             'name' => $request->name,
@@ -67,6 +79,10 @@ class ContactController extends Controller
             'subject' => $request->subject,
             'message' => $request->message,
         ]);
-        return Redirect()->route('contact')->with('success', 'Your Message Sent Successfully');
+        $notification = array(
+            'message' => 'Your Message Sent Successfully',
+            'alert-type' => 'success'
+        );
+        return Redirect()->route('contact')->with($notification);
     }
 }
